@@ -1,6 +1,6 @@
 ![](https://technotes.oss-cn-shenzhen.aliyuncs.com/2022/202212192108982.png)
 
-# Redis的String类型，原来这么占内存
+# 20230108-Redis的String类型，原来这么占内存
 
 > 存一个 Long 类型这么占内存，Redis 的内存开销都花在哪儿了？
 
