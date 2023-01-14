@@ -1,5 +1,5 @@
 # 《学习分享》系列文章
-这是我的专栏文章《学习分享》系列，每周一发表。这些内容大多来自我平时学习过程中的笔记，笔记仓库在 Github：studeyang/technotes。我认为比较优质的内容，就会以文章的形式发表在该专栏。
+这是我的专栏文章《学习分享》系列，每周一发表。这些内容大多来自我平时学习过程中的笔记，笔记仓库在 Github：[studeyang/technotes](https://github.com/studeyang/technotes)。其中我认为有深度、有帮助的内容，就会以文章的形式发表在该专栏。
 
 ## 2023年
 
@@ -19,7 +19,7 @@
 - [要不要走索引？MySQL 的成本分析](https://mp.weixin.qq.com/s/tviAVvP9aG_4JapqldLRMw)
 - [MySQL的事务隔离及实现原理](https://mp.weixin.qq.com/s/TpKTZE0EJAnYhs8t79KINw)
 - [基于start.spring.io，我实现了Java脚手架定制](https://mp.weixin.qq.com/s/_wu-zDhk5-hP6KR80JA_tg)
-- [现有1亿个用户10天的签到情况，你能统计出这10天连续签到的用户总数吗？](https://mp.weixin.qq.com/s/vcdmfZljCiv5ICJaRkvAAA)
+- [海量数据下，如何统计用户的签到信息？](https://mp.weixin.qq.com/s/vcdmfZljCiv5ICJaRkvAAA)
 - [Nacos配置中心落地与实践](https://mp.weixin.qq.com/s/PMmnCRBYm-DGjRf0PFzdNw)
 - [Spring Boot 配置体系详解](https://mp.weixin.qq.com/s/geZ4djhkoqQqlj8F2KK4PA)
 
