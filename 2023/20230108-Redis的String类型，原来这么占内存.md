@@ -114,8 +114,8 @@ struct __attribute__ ((__packed__)) hisdshdr64 {
 ![](https://technotes.oss-cn-shenzhen.aliyuncs.com/2022/202301082133520.png)
 
 - buf：字节数组，保存实际数据。为了表示字节数组的结束，Redis 会自动在数组最后加一个`'\0'`，这就会额外占用 1 个字节的开销。
-- len：占 4 个字节，表示 buf 的已用长度，不包括`'\0'`。
-- alloc：也占 4 个字节，表示 buf 的实际分配长度，不包括`'\0'`。
+- len：uint8_t 是 8 位无符号整型，会占用 1 字节的内存空间。表示 buf 的已用长度，不包括`'\0'`。
+- alloc：占 1 个字节，表示 buf 的实际分配长度，不包括`'\0'`。
 - flags：占 1 个字节，标记当前字节数组的属性，是`sdshdr8`还是`sdshdr16`等。（flags 值的定义可以看下面代码）
 
 在源码`sds.h`中，flags 值定义如下：
