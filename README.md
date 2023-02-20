@@ -1,5 +1,5 @@
 # 《学习分享》系列文章
-这是我的专栏文章《学习分享》系列，每周一发表。这些内容大多来自我平时学习过程中的笔记，笔记仓库在 Github：[studeyang/technotes](https://github.com/studeyang/technotes)。其中我认为有深度、有帮助的内容，就会以文章的形式发表在该专栏。
+这是我的专栏文章《学习分享》系列，每周一发表。这些内容大多来自我平时学习过程中的笔记，笔记仓库在 Github：[studeyang/technotes](https://github.com/studeyang/technotes)。
 
 ## 2023年
 
@@ -28,7 +28,7 @@
 
 ## 关注
 
-这个专栏会首发在我的公众号、[掘金](https://juejin.cn/user/2594503173605767/posts)和[今日头条](https://www.toutiao.com/c/user/token/MS4wLjABAAAArFlpgpSvRI74ttxw76bAENUnFIFcYTJQnZYS77fZmNQ/?source=mp_msg&tab=article)。
+这个专栏会首发在我的公众号和[掘金](https://juejin.cn/user/2594503173605767/posts)。
 
 微信搜索「杨同学technotes」或者通过下面二维码，即可关注公众号。
 
