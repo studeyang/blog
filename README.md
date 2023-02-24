@@ -1,5 +1,5 @@
 # 《学习分享》系列文章
-这是我的专栏文章《学习分享》系列，每周一发表。这些内容大多来自我平时学习过程中的笔记，笔记仓库在 Github：[studeyang/technotes](https://github.com/studeyang/technotes)。
+这是我的专栏文章《学习分享》系列。这些内容大多来自我平时学习过程中的笔记，笔记仓库在 Github：[studeyang/technotes](https://github.com/studeyang/technotes)。
 
 ## 2023年
 
