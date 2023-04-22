@@ -1,5 +1,7 @@
 # 06期：使用 OPTIMIZER_TRACE 窥探 MySQL 索引选择的秘密
 
+这里记录的是学习分享内容，文章维护在 Github：[studeyang/leanrning-share](https://github.com/studeyang/learning-share)。
+
 优化查询语句的性能是 MySQL 数据库管理中的一个重要方面。在优化查询性能时，选择正确的索引对于减少查询的响应时间和提高系统性能至关重要。但是，如何确定 MySQL 的索引选择策略？MySQL 的优化器是如何选择索引的？
 
 在这篇[《索引失效了？看看这几个常见的情况！》](https://mp.weixin.qq.com/s/s1-s7Dga4meaR-ZNw89tUw)文章中，我们介绍了索引区分度不高可能会导致索引失效，而这里的“不高”并没有具体量化，实际上 MySQL 会对执行计划进行成本估算，选择成本最低的方案来执行。具体我们还是通过一个案例来说明。
@@ -49,7 +51,7 @@ CALL insert_person();
 explain select * from person where NAME>'name84059' and create_time>'2023-04-15 13:00:00'
 ```
 
-![image-20230415170116366](https://technotes.oss-cn-shenzhen.aliyuncs.com/2023/image-20230415170116366.png)
+![](https://technotes.oss-cn-shenzhen.aliyuncs.com/2023/image-20230415170116366.png)
 
 通过执行计划，我们可以看到 type=All，表示这是一次全表扫描。接着，我们将 create_time 条件中的 13 点改为 15 点，再次执行查询：
 
@@ -57,7 +59,7 @@ explain select * from person where NAME>'name84059' and create_time>'2023-04-15 
 explain select * from person where NAME>'name84059' and create_time>'2023-04-15 15:00:00'
 ```
 
-![image-20230415170143165](https://technotes.oss-cn-shenzhen.aliyuncs.com/2023/image-20230415170143165.png)
+![](https://technotes.oss-cn-shenzhen.aliyuncs.com/2023/image-20230415170143165.png)
 
 这次执行计划显示 type=range，key=create_time，表示 MySQL 优化器选择了 create_time 索引来执行这个查询，而不是使用 name_score 联合索引。
 
@@ -241,3 +243,16 @@ SET optimizer_trace="enabled=off";
 explain select * from person FORCE INDEX(name_score) where NAME >'name84059' and create_time>'2023-04-15 13:00:00'
 ```
 
+<div align="center"><img src="https://technotes.oss-cn-shenzhen.aliyuncs.com/2023/202303052135542.gif"></div>
+
+## 封面
+
+![](https://technotes.oss-cn-shenzhen.aliyuncs.com/2023/202304181723557.png)
+
+## 相关文章
+
+也许你对下面文章也感兴趣。
+
+- [索引失效了？看看这几个常见的情况！](https://mp.weixin.qq.com/s/s1-s7Dga4meaR-ZNw89tUw)
+- [MySQL查询性能慢，该不该建索引？](https://mp.weixin.qq.com/s/JibCuFA9o0ANEUILeg9fTg)
+- [MySQL的事务隔离及实现原理](https://mp.weixin.qq.com/s/TpKTZE0EJAnYhs8t79KINw)
