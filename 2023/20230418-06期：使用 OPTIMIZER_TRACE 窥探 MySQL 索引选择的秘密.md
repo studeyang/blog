@@ -243,7 +243,7 @@ SET optimizer_trace="enabled=off";
 explain select * from person FORCE INDEX(name_score) where NAME >'name84059' and create_time>'2023-04-15 13:00:00'
 ```
 
-<div align="center"><img src="https://technotes.oss-cn-shenzhen.aliyuncs.com/2023/202303052135542.gif"></div>
+![](https://technotes.oss-cn-shenzhen.aliyuncs.com/2023/202303052135542.gif)
 
 ## 封面
 
