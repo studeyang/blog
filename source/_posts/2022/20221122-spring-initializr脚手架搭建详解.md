@@ -1,12 +1,20 @@
-# spring initializr脚手架搭建详解
+---
+id: 11
+title: spring initializr脚手架搭建详解
+date: 2022-11-22 09:00:00
+tags: Java脚手架
+categories: technotes
+toc: true
+mathjax: true
+---
 
 前段时间，我在[「基于start.spring.io，我实现了Java脚手架定制」](https://mp.weixin.qq.com/s?__biz=MzkwMTI4NTI1NA==&mid=2247483902&idx=1&sn=2e117fec67cdfb9064369835c0af41d8&chksm=c0b65517f7c1dc01be4080f4fd0f86cd534cf8d59244af34b5aed3340c653e5d697154e4742b&token=1554827504&lang=zh_CN#rd)一文中讲述了敝司的微服务脚手架落地过程中的前世今生，并提到了基于 spring initializr 的搭建了 2.0 版本的脚手架。今天我打算和你分享一下这其中的实现过程与细节，项目已经开源在 Github 上。
-
+<!-- more -->
 > start-parent：https://github.com/studeyang/start-parent
 >
 > 欢迎 star
 
-# 1、项目结构介绍
+## 1、项目结构介绍
 
 项目分为 initializr、start-client、start-site 三个部分，重要部分说明如下。
 
@@ -35,7 +43,7 @@ start-parent
 
 了解了项目的整体情况，下面请跟随我的思路，一起将工程搭建起来。
 
-# 2、集成Gitlab
+## 2、集成Gitlab
 
 如果你想使用项目中的「创建工程」功能，则需要进行此步骤的配置。这里我以`gitlab.com`为例，介绍如何完成与 Gitlab 的集成。
 
@@ -72,7 +80,7 @@ security:
 - admin.name：gitlab 的账号，用于创建工程，并将初始的工程代码提交，建议配置管理员账号；
 - admin.password：gitlab 的账号密码；
 
-# 3、添加组件
+## 3、添加组件
 
 接下来添加组件依赖。这里我以`casslog-spring-boot-starter`Jar 包为例，如果该组件仅支持部分版本的 SpringBoot，那可以配置 compatibility-range，例如：
 
@@ -126,13 +134,13 @@ initializr:
 
 ![组件添加效果图](https://technotes.oss-cn-shenzhen.aliyuncs.com/2022/202211271349589.png)
 
-# 4、部署应用
+## 4、部署应用
 
 下面就可以将脚手架部署到服务器上了。
 
 > 这里提醒一下，记得修改 Gitlab 的 redirect-uri 为脚手架服务器的地址。
 
-## 4.1 步骤一：工程打包
+### 4.1 步骤一：工程打包
 
 ```shell
 # 打包前端工程
@@ -148,7 +156,7 @@ cd {projectRoot}/start-site
 sh ../mvnw clean install -Dmaven.test.skip=true
 ```
 
-## 4.2 步骤二：打 Docker 镜像
+### 4.2 步骤二：打 Docker 镜像
 
 ```shell
 cd {projectRoot}/start-site
@@ -159,26 +167,26 @@ docker build -t start-site:0.0.1 .
 
 ![脚手架主界面](https://technotes.oss-cn-shenzhen.aliyuncs.com/2022/202211271058880.png)
 
-# 5、使用脚手架的正确姿势
+## 5、使用脚手架的正确姿势
 
-## 5.1 通过HELP.md管理使用文档
+### 5.1 通过HELP.md管理使用文档
 
 在「3、添加组件」过程中所配置的文档链接将会在 HELP.md 文件中展示，示意图如下：
 
 ![HELP.md](https://technotes.oss-cn-shenzhen.aliyuncs.com/2022/202211271355264.png)
 
-## 5.2 保存/分享工程
+### 5.2 保存/分享工程
 
 你配置好的工程可以通过「分享...」功能保存下来。
 
 ![分享](https://technotes.oss-cn-shenzhen.aliyuncs.com/2022/202211271357591.png)
 
-## 5.3 在IDEA中使用脚手架
+### 5.3 在IDEA中使用脚手架
 
 可在 IDEA 中快速创建工程，只需要配置好脚手架服务器地址即可。需要注意的是社区版的 IDEA 是没有这个功能的。
 
 ![IDEA](https://technotes.oss-cn-shenzhen.aliyuncs.com/2022/202211271359221.png)
 
-# 小结
+## 小结
 
-本文向你介绍了 Spring Initializr 脚手架的搭建过程，如果你在此过程中遇到了问题，可以提 ISSUE 或者在公众号「杨同学technotes」后台给我留言。
+本文向你介绍了 Spring Initializr 脚手架的搭建过程，如果你在此过程中遇到了问题，欢迎和我交流。

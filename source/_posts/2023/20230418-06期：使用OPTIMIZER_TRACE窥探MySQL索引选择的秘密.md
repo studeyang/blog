@@ -1,7 +1,17 @@
-# 06期：使用 OPTIMIZER_TRACE 窥探 MySQL 索引选择的秘密
+---
+id: 9
+title: 06期：使用 OPTIMIZER_TRACE 窥探 MySQL 索引选择的秘密
+date: 2023-04-18 09:00:00
+tags: MySQL
+cover: https://technotes.oss-cn-shenzhen.aliyuncs.com/2023/202304181723557.png
+thumbnail: https://technotes.oss-cn-shenzhen.aliyuncs.com/2023/202304181723557.png
+categories: technotes
+toc: true
+mathjax: true
+---
 
 这里记录的是学习分享内容，文章维护在 Github：[studeyang/leanrning-share](https://github.com/studeyang/learning-share)。
-
+<!-- more -->
 优化查询语句的性能是 MySQL 数据库管理中的一个重要方面。在优化查询性能时，选择正确的索引对于减少查询的响应时间和提高系统性能至关重要。但是，如何确定 MySQL 的索引选择策略？MySQL 的优化器是如何选择索引的？
 
 在这篇[《索引失效了？看看这几个常见的情况！》](https://mp.weixin.qq.com/s/s1-s7Dga4meaR-ZNw89tUw)文章中，我们介绍了索引区分度不高可能会导致索引失效，而这里的“不高”并没有具体量化，实际上 MySQL 会对执行计划进行成本估算，选择成本最低的方案来执行。具体我们还是通过一个案例来说明。
@@ -244,10 +254,6 @@ explain select * from person FORCE INDEX(name_score) where NAME >'name84059' and
 ```
 
 ![](https://technotes.oss-cn-shenzhen.aliyuncs.com/2023/202303052135542.gif)
-
-## 封面
-
-![](https://technotes.oss-cn-shenzhen.aliyuncs.com/2023/202304181723557.png)
 
 ## 相关文章
 

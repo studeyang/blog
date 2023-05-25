@@ -1,13 +1,17 @@
-![](https://technotes.oss-cn-shenzhen.aliyuncs.com/2022/202212192108982.png)
-
-# 20230108-Redis的String类型，原来这么占内存
-
-> 存一个 Long 类型这么占内存，Redis 的内存开销都花在哪儿了？
+---
+id: 2
+title: Redis String类型的内存开销都花在哪儿了？
+date: 2023-01-07 09:00:00
+tags: Redis
+categories: technotes
+toc: true
+mathjax: true
+---
 
 ## 1、场景介绍
 
 假设现在我们要开发一个图片存储系统，要求这个系统能够根据图片 ID 快速查找到图片存储对象 ID。图片 ID 和图片存储对象 ID 的样例数据如下：
-
+<!-- more -->
 ```
 photo_id: 1101000060
 photo_obj_id: 3302000080
@@ -197,13 +201,11 @@ jemalloc 在分配内存时，会分配一个最接近 2 的 N 次方的数值�
 
 最终我们分析出来的内存开销，为 66 字节，比较接近上文场景中的平均值 68 了。
 
-## 最后
-
 既然 String 类型这么占内存，那么你有好的方案来节省内存吗？
 
-这篇文章内容我准备了一周，如果对你有帮助，可以点个「在看」吗？你的点赞会让作者兴奋得一晚上睡不着觉。
+## 封面
 
-对后面的内容感兴趣，也可以关注公众号「杨同学technotes」，感谢支持！
+![](https://technotes.oss-cn-shenzhen.aliyuncs.com/2022/202212192108982.png)
 
 ## 参考资料
 
@@ -212,4 +214,3 @@ jemalloc 在分配内存时，会分配一个最接近 2 的 N 次方的数值�
 - SDS 的定义，参考：https://juejin.cn/post/6844903936520880135#heading-6
 - 文章大纲，参考极客时间《Redis核心技术与实战》
 - 《Redis设计与实现》
-
