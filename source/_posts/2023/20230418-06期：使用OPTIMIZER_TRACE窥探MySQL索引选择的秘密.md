@@ -1,5 +1,5 @@
 ---
-id: 9
+permalink: 2023/009.html
 title: 06期：使用 OPTIMIZER_TRACE 窥探 MySQL 索引选择的秘密
 date: 2023-04-18 09:00:00
 tags: MySQL

@@ -1,5 +1,5 @@
 ---
-id: 11
+permalink: 2022/011.html
 title: spring initializr脚手架搭建详解
 date: 2022-11-22 09:00:00
 tags: Java脚手架

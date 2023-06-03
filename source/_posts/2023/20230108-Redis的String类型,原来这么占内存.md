@@ -1,5 +1,5 @@
 ---
-id: 2
+permalink: 2023/002.html
 title: Redis String类型的内存开销都花在哪儿了？
 date: 2023-01-07 09:00:00
 tags: Redis
