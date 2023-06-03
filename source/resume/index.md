@@ -1,3 +1,7 @@
+---
+comments: false
+---
+
 访问简历前，请联系我获取提取码。
 
 - Email：yanglu_u@126.com
