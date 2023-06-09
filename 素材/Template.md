@@ -1,12 +1,36 @@
-# 04期：领域驱动设计与微服务
-
-这里记录的是学习分享内容，文章维护在 Github：[studeyang/leanrning-share](https://github.com/studeyang/learning-share)。
-
-## 摘要
+---
+permalink: 2022/1.html
+title: 领域驱动设计与微服务
+date: 2022-01-01 09:00:00
+tags: 设计模式
+cover: https://technotes.oss-cn-shenzhen.aliyuncs.com/2023/202305131823132.png
+thumbnail: https://technotes.oss-cn-shenzhen.aliyuncs.com/2023/202305131823132.png
+categories: template
+toc: true
+description: 文章模板，后面的文章可以参考这个模板的参数
+---
 
 传统的消息队列对业务方提出了更高的要求，我们期望提供的是一种以业务为重心的，面向服务的解决方案。
 
-## 正文
+<!-- more -->
+
+## 一、段落
+
+
+
+## 二、段落
+
+
+
+### 2.1 细分
+
+
+
+### 2.2 细分
+
+
+
+## 三、段落
 
 
 
