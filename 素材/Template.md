@@ -1,11 +1,11 @@
 ---
-permalink: 2022/1.html
-title: 领域驱动设计与微服务
+permalink: 2023/13.html
+title: Git如何修改历史的Commit信息
 date: 2022-01-01 09:00:00
-tags: 设计模式
-cover: https://technotes.oss-cn-shenzhen.aliyuncs.com/2023/202305131823132.png
-thumbnail: https://technotes.oss-cn-shenzhen.aliyuncs.com/2023/202305131823132.png
-categories: template
+tags: Git
+cover: https://technotes.oss-cn-shenzhen.aliyuncs.com/2023/20230616140555.png
+thumbnail: https://technotes.oss-cn-shenzhen.aliyuncs.com/2023/20230616140555.png
+categories: technotes
 toc: true
 description: 文章模板，后面的文章可以参考这个模板的参数
 ---
@@ -41,8 +41,6 @@ description: 文章模板，后面的文章可以参考这个模板的参数
 
 
 ## 相关文章
-
-也许你对下面文章也感兴趣。
 
 - [学习分享（第3期）：你所理解的架构是什么？](https://mp.weixin.qq.com/s/ao9-DW3tXw25AW6D96m5LQ)
 
