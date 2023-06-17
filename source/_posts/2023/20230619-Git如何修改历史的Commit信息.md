@@ -7,14 +7,14 @@ cover: https://technotes.oss-cn-shenzhen.aliyuncs.com/2023/20230616140555.png
 thumbnail: https://technotes.oss-cn-shenzhen.aliyuncs.com/2023/20230616140555.png
 categories: technotes
 toc: true
-description: 最近由于一行单元测试代码没有写 Assert 断言，导致了项目在 CI 过程中没有通过，于是遭到了某位同事的吐槽，在修改我的代码后写上了一句提交信息。我想，做为技术人，修改这条 Commit 信息还是可以的，于是我通过本文介绍的技巧完成了修改。
+description: 最近由于一行单元测试代码没有写 Assert 断言，导致了项目在 CI 过程中没有通过，于是遭到了某位同事的吐槽，在修改我的代码后写上了一句提交信息。我想，做为技术人，修改这条 Commit 信息还是不难的，于是我通过本文介绍的技巧完成了修改。
 ---
 
 最近由于一行单元测试代码没有写 Assert 断言，导致了项目在 CI 过程中没有通过，于是遭到了某位同事的吐槽，在修改我的代码后写上了一句提交信息。
 
 ![](https://technotes.oss-cn-shenzhen.aliyuncs.com/2023/image-20230616132530909.png)
 
-我想，做为技术人，修改这条 Commit 信息还是可以的，于是我通过本文介绍的技巧完成了修改，效果如下：
+我想，做为技术人，修改这条 Commit 信息还是不难的，于是我通过本文介绍的技巧完成了修改，效果如下：
 
 ![](https://technotes.oss-cn-shenzhen.aliyuncs.com/2023/image-20230616133302759.png)
 
@@ -27,7 +27,7 @@ description: 最近由于一行单元测试代码没有写 Assert 断言，导�
 例如当前有 3 条提交，使用 `git log` 查看。
 
 ```
-commit e7dc6e4d1001ecff3c1000f82ffffe06859fad61
+commit 0a4549598e56b53395c562e784553d863ec597c1
 Author: 张三 <zhangsan@git.com>
 Date:   Fri Jun 16 12:25:34 2023 +0800
    fix: 正常的提交信息1
@@ -51,7 +51,7 @@ Date:   Thu Jun 15 14:32:49 2023 +0800
 
 ```
 pick e0871dfb91f6a0acc5298d9e1960291629479a46 fix: fucking the code
-pick e7dc6e4d1001ecff3c1000f82ffffe06859fad61 fix: 正常的提交信息1
+pick 0a4549598e56b53395c562e784553d863ec597c1 fix: 正常的提交信息1
 
 # ...
 ```
@@ -60,7 +60,7 @@ pick e7dc6e4d1001ecff3c1000f82ffffe06859fad61 fix: 正常的提交信息1
 
 ```
 edit e0871dfb91f6a0acc5298d9e1960291629479a46 fix: fucking the code
-pick e7dc6e4d1001ecff3c1000f82ffffe06859fad61 fix: 正常的提交信息1
+pick 0a4549598e56b53395c562e784553d863ec597c1 fix: 正常的提交信息1
 
 # ...
 ```
@@ -94,7 +94,7 @@ fix: fucking me
 接下来再查看提交日志，`git log`：
 
 ```
-commit e7dc6e4d1001ecff3c1000f82ffffe06859fad61
+commit 0a4549598e56b53395c562e784553d863ec597c1
 Author: 张三 <zhangsan@git.com>
 Date:   Fri Jun 16 12:25:34 2023 +0800
    fix: 正常的提交信息1
