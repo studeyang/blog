@@ -164,6 +164,8 @@ Date:   Thu Jun 15 14:32:49 2023 +0800
 | exec   | x    | 执行shell命令                                            |
 | drop   | d    | 丢弃该commit                                             |
 
+> 文章发表于 Studeyang.tech，点击阅读原文跳转。
+
 ![](https://technotes.oss-cn-shenzhen.aliyuncs.com/2023/202303052135542.gif)
 
 ## 封面
