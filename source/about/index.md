@@ -12,7 +12,7 @@ Stude 是同学的意思，对应我的网名：杨同学。同时，Studeyang �
 
 本站内容也会同步在我的微信公众号上：【杨同学 technotes】
 
-![微信公众号二维码](https://technotes.oss-cn-shenzhen.aliyuncs.com/2022/qrcode_for_gh_8d08add0e5a6_258.jpg)
+<div align="center"> <img src="https://technotes.oss-cn-shenzhen.aliyuncs.com/2022/qrcode_for_gh_8d08add0e5a6_258.jpg"> </div><br>
 
 ## 个人简历
 
