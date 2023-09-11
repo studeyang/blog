@@ -3,14 +3,14 @@ permalink: 2023/0912.html
 title: Spring Security入门：保护Web应用
 date: 2023-09-12 09:00:00
 tags: Spring Security
-cover: 
-thumbnail: 
+cover: https://technotes.oss-cn-shenzhen.aliyuncs.com/2023/202309112237318.jpg
+thumbnail: https://technotes.oss-cn-shenzhen.aliyuncs.com/2023/202309112237318.jpg
 categories: technotes
 toc: true
 description: 本文我们将构建一个简单但完整的小型 Web 应用程序，以演示 Spring Security 的入门教程。系统大致逻辑是：当合法用户成功登录系统之后，浏览器会跳转到一个系统主页，并展示一些个人健康档案（HealthRecord）数据。
 ---
 
-本文我们将构建一个简单但完整的小型 Web 应用程序，以演示 Spring Security 的入门教程。系统大致逻辑是：当合法用户成功登录系统之后，浏览器会跳转到一个系统主页，并展示一些个人健康档案（HealthRecord）数据。
+本文我们将构建一个简单但完整的小型 Web 应用程序，以演示 Spring Security 的入门教程。大致逻辑是：当合法用户成功登录系统之后，浏览器会跳转到一个系统主页，并展示一些个人健康档案（HealthRecord）数据。
 
 让我们开始吧！
 
@@ -107,7 +107,7 @@ INSERT IGNORE INTO `spring_security`.`health_record` (`id`, `username`, `name`, 
 INSERT IGNORE INTO `spring_security`.`health_record` (`id`, `username`, `name`, `value`) VALUES ('4', 'studeyang', 'pulse', '80');
 ```
 
-这里初始化了一个用户名为 “jianxiang”的用户，同时指定了它的密码为“12345”，加密算法为“BCRYPT”。
+这里初始化了一个用户名为 “studeyang”的用户，同时指定了它的密码为“12345”，加密算法为“BCRYPT”。
 
 现在，领域对象和数据层面的初始化工作已经完成了，接下来我们需要在代码工程的 pom 文件中添加如下所示的 Maven 依赖：
 
@@ -401,4 +401,4 @@ public class HealthRecordController {
 
 ## 封面
 
-![](https://technotes.oss-cn-shenzhen.aliyuncs.com/2023/202308022332512.jpeg)
+![](https://technotes.oss-cn-shenzhen.aliyuncs.com/2023/202309112237318.jpg)
