@@ -1,5 +1,11 @@
-# 《学习分享》系列文章
-这是我的《学习分享》系列文章。这些内容大多来自我平时学习过程中的笔记，笔记仓库在 Github：[studeyang/technotes](https://github.com/studeyang/technotes)。
+# studeyang.tech
+
+这个仓库收录了我的 [个人网站](https://studeyang.tech) 所有文章。这些文章内容大多来自我平时学习过程中的笔记，笔记仓库在 Github：[studeyang/technotes](https://github.com/studeyang/technotes)。
+
+如何关注？
+
+- [掘金](https://juejin.cn/user/2594503173605767/posts)
+- [公众号](https://camo.githubusercontent.com/76bf22c0fd86e7692f3527fc9bae39b63cf356eadba5451a12bdec576397e29c/68747470733a2f2f746563686e6f7465732e6f73732d636e2d7368656e7a68656e2e616c6979756e63732e636f6d2f323032322f7172636f64655f666f725f67685f3864303861646430653561365f3235382e6a7067)
 
 ## 2023年
 
@@ -59,12 +65,3 @@
 - [海量数据下，如何统计用户的签到信息？](source/_posts/2022/20221029-海量数据下,统计用户的签到信息.md)
 - [Nacos配置中心落地与实践](source/_posts/2022/20221024-Nacos配置中心落地与实践.md)
 - [Spring Boot 配置体系详解](https://mp.weixin.qq.com/s/geZ4djhkoqQqlj8F2KK4PA)
-
-## 关注
-
-这个专栏会首发在我的公众号和[掘金](https://juejin.cn/user/2594503173605767/posts)。
-
-微信搜索「杨同学technotes」或者通过下面二维码，即可关注公众号。
-
-![微信公众号二维码](https://technotes.oss-cn-shenzhen.aliyuncs.com/2022/qrcode_for_gh_8d08add0e5a6_258.jpg)
-
