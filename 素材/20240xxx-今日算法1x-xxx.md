@@ -1,7 +1,7 @@
 ---
-permalink: 2023/xxxx.html
+permalink: 2024/xxxx.html
 title: 今日算法0x-xxxx
-date: 2023-xx-xx 09:00:00
+date: 2024-xx-xx 09:00:00
 tags: LeetCode
 cover: 
 thumbnail: 
