@@ -2,9 +2,9 @@
 permalink: 2024/0803.html
 title: 【译】Apache Shiro介绍
 date: 2024-08-03 09:00:00
-tags: 
-cover: 
-thumbnail: 
+tags: Shiro
+cover: https://technotes.oss-cn-shenzhen.aliyuncs.com/2024/202408022243347.jpeg
+thumbnail: https://technotes.oss-cn-shenzhen.aliyuncs.com/2024/202408022243347.jpeg
 categories: technotes
 toc: true
 description: Apache Shiro 是一个功能强大且易于使用的 Java 安全框架，表现在身份认证、授权、加密和会话管理，可用于保护任何应用程序，小到命令行应用程序、移动应用程序，大到 Web 和企业应用程序。
@@ -386,7 +386,7 @@ Shiro 还提供了一个 JSP 标签库，允许您根据当前主题（Subject�
 
 ## 封面
 
-
+![](https://technotes.oss-cn-shenzhen.aliyuncs.com/2024/202408022243347.jpeg)
 
 ## 参考资料
 
@@ -394,5 +394,5 @@ Shiro 还提供了一个 JSP 标签库，允许您根据当前主题（Subject�
 
 ## 相关文章
 
-- 
+- [Spring Security入门：保护Web应用](https://mp.weixin.qq.com/s/b4LA33RBELBSii54GMz4MA)
 
