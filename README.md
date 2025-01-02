@@ -1,4 +1,4 @@
-# studeyang.tech
+# studeyang.cn
 
 这个仓库收录了我的 [个人网站](https://studeyang.tech) 所有文章。这些文章内容大多来自我平时学习过程中的笔记，笔记仓库在 Github：[studeyang/technotes](https://github.com/studeyang/technotes)。
 
