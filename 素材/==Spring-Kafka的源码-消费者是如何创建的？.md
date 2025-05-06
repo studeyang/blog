@@ -1,10 +1,31 @@
-# Spring-Kafka消费者是如何创建的？
+# Spring Kafka消费者是如何创建的？
 
-> 源码版本：spring-kafka v2.6.6
+对于 Java 应用，Apache Kafka 提供了访问 Kafka 服务的客户端包 `kafka-clients.jar`，要消费消息时，需要创建一个 `Consumer` 对象，并监听特定的 `Topic`。
 
-## 如何使用Spring-Kafka消费消息？
+下面这段代码想必我们都很熟悉了。
 
-### 1、引入依赖
+```java
+public void poll() {
+    Consumer<String, String> consumer = new KafkaConsumer<>(getProperties());
+    consumer.subscribe(Collections.singleton(topic), new RebalanceListener());
+    ConsumerRecords<String, String> records = consumer.poll(1000);
+    consumer.commitSync();
+}
+```
+
+而 Spring Kafka 基于 `kafka-clients.jar` 之上提供了更加便利的交互形式，在监听消息时只需通过 `@KafkaListener(id = "listen1", topics = "topic1")` 即可完成消息的监听。
+
+便利之余，也引发了我们思考：Spring Kafka 消费者是如何创建的？
+
+> 本文源码版本：spring-kafka v2.6.6
+
+## 一、示例：使用Spring Kafka消费消息
+
+项目里要接入 Spring Kafka，通常需要经过以下几个步骤。
+
+**第一步：引入依赖**
+
+pom.xml 文件引入如下依赖。
 
 ```xml
 <dependency>
@@ -14,9 +35,9 @@
 </dependency>
 ```
 
-### 2、消费者配置
+**第二步：消费者配置**
 
-配置类上添加 `@EnableKafka` 注解，并初始化 `ConcurrentKafkaListenerContainerFactory` Bean。
+配置类上添加 `@EnableKafka` 注解，并初始化 `ConcurrentKafkaListenerContainerFactory` Bean，这是最常见的使用方式。
 
 ```java
 @Configuration
@@ -47,7 +68,9 @@ public class Config {
 }
 ```
 
-### 3、消息监听器
+**第三步：消息监听器**
+
+在方法上添加 `@KafkaListener` 注解，这也是最常见的使用方式。
 
 ```java
 @Service
@@ -59,9 +82,11 @@ public class Listener {
 }
 ```
 
-## 初始化过程
+至此，项目就能轻松的实现消息监听了。我们基于此使用方式继续探讨 Spring Kafka 消费者的创建过程。
 
-以 `@EnableKafka` 注解为切入点。
+## 二、消费者的初始化过程
+
+基于上面示例，我们以 `@EnableKafka` 注解为切入点，源码如下。
 
 ```java
 @Import(KafkaListenerConfigurationSelector.class)
@@ -77,34 +102,37 @@ public class KafkaBootstrapConfiguration implements ImportBeanDefinitionRegistra
     public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
         // 省略无关代码
         // beanName: org.springframework.kafka.config.internalKafkaListenerAnnotationProcessor
-        registry.registerBeanDefinition(KafkaListenerConfigUtils.KAFKA_LISTENER_ANNOTATION_PROCESSOR_BEAN_NAME,
-                    new RootBeanDefinition(KafkaListenerAnnotationBeanPostProcessor.class));
+        registry.registerBeanDefinition(
+            KafkaListenerConfigUtils.KAFKA_LISTENER_ANNOTATION_PROCESSOR_BEAN_NAME,
+            new RootBeanDefinition(KafkaListenerAnnotationBeanPostProcessor.class));
         // beanName: org.springframework.kafka.config.internalKafkaListenerEndpointRegistry
-        registry.registerBeanDefinition(KafkaListenerConfigUtils.KAFKA_LISTENER_ENDPOINT_REGISTRY_BEAN_NAME,
-                    new RootBeanDefinition(KafkaListenerEndpointRegistry.class));
+        registry.registerBeanDefinition(
+            KafkaListenerConfigUtils.KAFKA_LISTENER_ENDPOINT_REGISTRY_BEAN_NAME,
+            new RootBeanDefinition(KafkaListenerEndpointRegistry.class));
     }
 }
 ```
 
-总结代码的链路如下：
+由此说明 `KafkaListenerAnnotationBeanPostProcessor` 和 `KafkaListenerEndpointRegistry` 在消费者的初始化过程中起到了重要的作用。
 
-```
-@EnableKafka
--> KafkaListenerConfigurationSelector
--> KafkaBootstrapConfiguration
-    [注册Bean: KafkaListenerAnnotationBeanPostProcessor]
-    [注册Bean: KafkaListenerEndpointRegistry]
-```
-
-### 消费者注册
-
-核心角色：
+这是两个核心的角色：
 
 - KafkaListenerAnnotationBeanPostProcessor：扫描 `@KafkaListener`；
-- KafkaListenerEndpointRegistrar：`@KafkaListener` 注册器；
 - KafkaListenerEndpointRegistry：`@KafkaListener` 注册表；
 
-KafkaListenerAnnotationBeanPostProcessor
+> <mark>代码阅读小记：</mark>
+>
+> ```
+> @EnableKafka
+> -> KafkaListenerConfigurationSelector
+> -> KafkaBootstrapConfiguration
+>     [注册Bean: KafkaListenerAnnotationBeanPostProcessor]
+>     [注册Bean: KafkaListenerEndpointRegistry]
+> ```
+
+### 2.1 消费者注册（第一个 Bean）
+
+首先来看第一个 Bean: `KafkaListenerAnnotationBeanPostProcessor`。
 
 ```java
 public class KafkaListenerAnnotationBeanPostProcessor<K, V>
@@ -112,7 +140,7 @@ public class KafkaListenerAnnotationBeanPostProcessor<K, V>
     @Override
     public Object postProcessAfterInitialization(final Object bean, final String beanName) throws BeansException {
         // 省略无关代码
-        // 查找被 @KafkaListener 标记的方法 (自定义注解上带 @KafkaListener 也能识别)
+        // 查找被 @KafkaListener 标记的方法 (或者自定义注解上带 @KafkaListener 标记的方法)
         Map<Method, Set<KafkaListener>> annotatedMethods = MethodIntrospector.selectMethods(targetClass,
                 (MethodIntrospector.MetadataLookup<Set<KafkaListener>>) method -> {
                     Set<KafkaListener> listenerMethods = findListenerAnnotations(method);
@@ -130,7 +158,11 @@ public class KafkaListenerAnnotationBeanPostProcessor<K, V>
 }
 ```
 
+上述代码有两个关键点，第一是查找 `@KafkaListener ` 标记的方法添加了特殊的 Lookup 特性；第二就是处理 `KafkaListener`。
 
+什么是 Lookup 特性呢？
+
+举个例子，我们定义了一个新的注解 `@EventHandler` ，并在该注解上标记 `@KafkaListener`。
 
 ```java
 @KafkaListener
@@ -149,9 +181,19 @@ public @interface EventHandler {
 }
 ```
 
+当我们使用新的注解 `@EventHandler` 标记方法时，能起到和 `@KafkaListener` 一样的效果。
 
+```java
+@Service
+public class Listener {
+    @EventHandler(groupId = "listen1", topics = "topic1")
+    public void listen1(String in) {
+        System.out.println(in);
+    }
+}
+```
 
-被 `@KafkaListener` 标记的方法最终会被实例化成 `MethodKafkaListenerEndpoint` 对象。
+我们继续处理 KafkaListener 代码跟踪，现在来到了 `KafkaListenerAnnotationBeanPostProcessor` 的 `processListener()` 方法。
 
 ```java
 public class KafkaListenerAnnotationBeanPostProcessor<K, V>
@@ -167,21 +209,17 @@ public class KafkaListenerAnnotationBeanPostProcessor<K, V>
         endpoint.setMessageHandlerMethodFactory(this.messageHandlerMethodFactory);
         endpoint.setId(getEndpointId(kafkaListener));
         endpoint.setGroupId(getEndpointGroupId(kafkaListener, endpoint.getId()));
-        endpoint.setTopicPartitions(resolveTopicPartitions(kafkaListener));
         endpoint.setTopics(resolveTopics(kafkaListener));
-        endpoint.setTopicPattern(resolvePattern(kafkaListener));
-        endpoint.setClientIdPrefix(resolveExpressionAsString(kafkaListener.clientIdPrefix(), "clientIdPrefix"));
         // 执行注册
         this.registrar.registerEndpoint(endpoint, factory);
     }
 }
 ```
 
-`KafkaListener` 会被注册到 List 集合中。
+被 `@KafkaListener` 标记的方法最终会被实例化成 `MethodKafkaListenerEndpoint` 对象，并由第三个角色--注册器 `KafkaListenerEndpointRegistrar` 进行注册。
 
 ```java
 public class KafkaListenerEndpointRegistrar implements BeanFactoryAware, InitializingBean {
-    // 容器
     private final List<KafkaListenerEndpointDescriptor> endpointDescriptors = new ArrayList<>();
     // 省略其他方法
     
@@ -193,21 +231,22 @@ public class KafkaListenerEndpointRegistrar implements BeanFactoryAware, Initial
 }
 ```
 
-总结代码的链路如下：
+由此可见，`KafkaListener` 会被注册到 List 集合中。
 
-```
--> KafkaListenerAnnotationBeanPostProcessor#postProcessAfterInitialization()
--> processKafkaListener()
--> processListener()
--> KafkaListenerEndpointRegistrar#registerEndpoint()
--> endpointDescriptors [注册到容器里List]
-```
+> <mark>代码阅读小记：</mark>
+>
+> ```
+> -> KafkaListenerAnnotationBeanPostProcessor#postProcessAfterInitialization()
+> -> processKafkaListener()
+> -> processListener()
+> -> KafkaListenerEndpointRegistrar#registerEndpoint()
+> -> endpointDescriptors [注册到容器里List]
+> ```
+>
 
-此时，程序里已经完成了 `KafkaListener` 的注册并存储至 endpointDescriptor 中。
+到这里，`BeanPostProcessor` 的 `postProcessAfterInitialization` 方法已经执行完了，程序完成了 `KafkaListener` 的注册并存储至 endpointDescriptors 中。
 
-
-
-同样是 KafkaListenerAnnotationBeanPostProcessor，
+接下来会执行 Bean 的下一个生命周期方法：`afterSingletonsInstantiated`。
 
 ```java
 public class KafkaListenerAnnotationBeanPostProcessor<K, V>
@@ -224,7 +263,7 @@ public class KafkaListenerAnnotationBeanPostProcessor<K, V>
 }
 ```
 
-
+注册器 `KafkaListenerEndpointRegistrar` 的注册逻辑如下。
 
 ```java
 public class KafkaListenerEndpointRegistrar implements BeanFactoryAware, InitializingBean {
@@ -237,6 +276,7 @@ public class KafkaListenerEndpointRegistrar implements BeanFactoryAware, Initial
     }
 
     protected void registerAllEndpoints() {
+        // 注册到注册表当中
 		for (KafkaListenerEndpointDescriptor descriptor : this.endpointDescriptors) {
 			this.endpointRegistry.registerListenerContainer(
 					descriptor.endpoint, resolveContainerFactory(descriptor));
@@ -245,15 +285,17 @@ public class KafkaListenerEndpointRegistrar implements BeanFactoryAware, Initial
 }
 ```
 
-
+可见，注册器最终委托给了注册表处理，注册表中由一个 `ConcurrentHashMap` 进行保存。
 
 ```java
-public class KafkaListenerEndpointRegistry implements DisposableBean, SmartLifecycle, ApplicationContextAware,
-        ApplicationListener<ContextRefreshedEvent> {
+public class KafkaListenerEndpointRegistry implements DisposableBean, 
+        SmartLifecycle, ApplicationContextAware, ApplicationListener<ContextRefreshedEvent> {
             
     private final Map<String, MessageListenerContainer> listenerContainers = new ConcurrentHashMap<>();
     
-    public void registerListenerContainer(KafkaListenerEndpoint endpoint, KafkaListenerContainerFactory<?> factory) {
+    // 注册表的注册逻辑
+    public void registerListenerContainer(KafkaListenerEndpoint endpoint, 
+                                          KafkaListenerContainerFactory<?> factory) {
         registerListenerContainer(endpoint, factory, false);
     }
     
@@ -267,13 +309,25 @@ public class KafkaListenerEndpointRegistry implements DisposableBean, SmartLifec
 }
 ```
 
+在示例中，我们配置的是 `ConcurrentKafkaListenerContainerFactory` 来创建 `KafkaListener` 容器的，因此这里往注册表（KafkaListenerEndpointRegistry）里添加的是 `ConcurrentMessageListenerContainer` 对象实例。
 
+> <mark>代码阅读小记：</mark>
+>
+> ```
+> KafkaListenerAnnotationBeanPostProcessor#afterSingletonsInstantiated()
+> -> KafkaListenerEndpointRegistrar#afterPropertiesSet()
+> -> registerAllEndpoints()
+> -> KafkaListenerEndpointRegistry#registerListenerContainer()
+> -> [listenerContainers] [注册到容器里Map]
+> ```
 
-### 启动监听
+### 2.2 启动监听（第二个 Bean）
+
+再来看第二个 Bean: `KafkaListenerEndpointRegistry`。它实现了 Spring 生命周期 SmartLifecycle 接口，在程序启动时，会调用 Bean 的 `start` 方法。
 
 ```java
-public class KafkaListenerEndpointRegistry implements DisposableBean, SmartLifecycle, ApplicationContextAware,
-        ApplicationListener<ContextRefreshedEvent> {
+public class KafkaListenerEndpointRegistry implements DisposableBean, 
+        SmartLifecycle, ApplicationContextAware, ApplicationListener<ContextRefreshedEvent> {
             
     @Override
     public void start() {
@@ -291,7 +345,7 @@ public class KafkaListenerEndpointRegistry implements DisposableBean, SmartLifec
 }
 ```
 
-`ConcurrentMessageListenerContainer` 委托给一个或多个`KafkaMessageListenerContainer`实例以提供多线程消费。
+注册表中包含了许多消息监听容器（MessageListenerContainer），具体来说是 `ConcurrentMessageListenerContainer`  ，这是一个多线程版本的消息监听容器（MessageListenerContainer），相对应的 `KafkaMessageListenerContainer` 是单线程版本的消息监听容器（MessageListenerContainer）。
 
 ```java
 public class ConcurrentMessageListenerContainer<K, V> extends AbstractMessageListenerContainer<K, V> {
@@ -310,7 +364,7 @@ public class ConcurrentMessageListenerContainer<K, V> extends AbstractMessageLis
 }
 ```
 
-
+可见，`ConcurrentMessageListenerContainer` 通过委托给多个`KafkaMessageListenerContainer`实例从而实现多线程消费。
 
 ```java
 
@@ -348,7 +402,9 @@ public class KafkaMessageListenerContainer<K, V>  extends AbstractMessageListene
 }
 ```
 
+最终我们在 `KafkaMessageListenerContainer` 的内部类 `ListenerConsumer` 中发现了 kafka-clients.jar 中的 Consumer 接口类。它的创建过程是由 `ConsumerFactory` 代为创建，`ConsumerFactory` 是一个接口类，它只有一个实现：`DefaultKafkaConsumerFactory`。
 
+最终，Consumer 消费者的创建代码如下。
 
 ```java
 public class DefaultKafkaConsumerFactory<K, V> extends KafkaResourceFactory
@@ -366,7 +422,19 @@ public class DefaultKafkaConsumerFactory<K, V> extends KafkaResourceFactory
 }
 ```
 
-总结代码的链路如下：
+> <mark>代码阅读小记：</mark>
+>
+> ```
+> KafkaListenerEndpointRegistry#start()
+> -> AbstractMessageListenerContainer#start()
+> -> ConcurrentMessageListenerContainer#doStart() (concurrency不能大于partitions)
+> -> KafkaMessageListenerContainer#start() -> doStart()
+> -> DefaultKafkaConsumerFactory#createRawConsumer()
+> ```
+
+## 三、总结
+
+总结一下上文中各部分的代码阅读小记，得到如下代码链路：
 
 ```
 @EnableKafka
@@ -395,5 +463,4 @@ KafkaListenerEndpointRegistry#start()
 -> KafkaMessageListenerContainer#start() -> doStart()
 -> DefaultKafkaConsumerFactory#createRawConsumer()
 ```
-
 
