@@ -3,8 +3,8 @@ permalink: 2025/0507.html
 title: 深入Spring Kafka：消费者是如何创建的？
 date: 2025-05-07 23:00:00
 tags: Kafka
-cover: 
-thumbnail: 
+cover: https://technotes.oss-cn-shenzhen.aliyuncs.com/2024/202505071803032.png
+thumbnail: https://technotes.oss-cn-shenzhen.aliyuncs.com/2024/202505071803032.png
 categories: technotes
 toc: true
 description: Spring Kafka 在原生客户端基础上进行了深度封装，通过声明式注解显著简化了开发流程。这种简洁的语法背后，Spring Kafka 实际上构建了一套完整的消费者（Consumer）管理机制。那么问题来了：Spring Kafka 是如何创建这些消费者的呢？
@@ -494,7 +494,7 @@ KafkaListenerEndpointRegistry#start()
 
 ## 封面
 
-
+![](https://technotes.oss-cn-shenzhen.aliyuncs.com/2024/202505071803032.png)
 
 ## 相关文章
 
