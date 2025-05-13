@@ -23,7 +23,7 @@
 
 2个重试Policy
 
-![image-20250418152331640](https://technotes.oss-cn-shenzhen.aliyuncs.com/2024/202504181523713.png)
+![](https://technotes.oss-cn-shenzhen.aliyuncs.com/2024/202504181523713.png)
 
 # 使用方式
 

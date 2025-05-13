@@ -114,10 +114,10 @@ public @interface EnableKafka {
 
 @Order
 public class KafkaListenerConfigurationSelector implements DeferredImportSelector {
-	@Override
-	public String[] selectImports(AnnotationMetadata importingClassMetadata) {
-		return new String[] { KafkaBootstrapConfiguration.class.getName() };
-	}
+    @Override
+    public String[] selectImports(AnnotationMetadata importingClassMetadata) {
+        return new String[] { KafkaBootstrapConfiguration.class.getName() };
+    }
 }
 ```
 
@@ -303,10 +303,10 @@ public class KafkaListenerEndpointRegistrar implements BeanFactoryAware, Initial
 
     protected void registerAllEndpoints() {
         // 注册到注册表当中
-		for (KafkaListenerEndpointDescriptor descriptor : this.endpointDescriptors) {
-			this.endpointRegistry.registerListenerContainer(
-					descriptor.endpoint, resolveContainerFactory(descriptor));
-		}
+        for (KafkaListenerEndpointDescriptor descriptor : this.endpointDescriptors) {
+            this.endpointRegistry.registerListenerContainer(
+                descriptor.endpoint, resolveContainerFactory(descriptor));
+        }
     }
 }
 ```
@@ -435,16 +435,16 @@ Consumer 消费者的创建代码如下。
 
 ```java
 public class DefaultKafkaConsumerFactory<K, V> extends KafkaResourceFactory
-		implements ConsumerFactory<K, V>, BeanNameAware {
+        implements ConsumerFactory<K, V>, BeanNameAware {
 
     protected Consumer<K, V> createKafkaConsumer(Map<String, Object> configProps) {
-		return createRawConsumer(configProps);
-	}
-	protected Consumer<K, V> createRawConsumer(Map<String, Object> configProps) {
+        return createRawConsumer(configProps);
+    }
+    protected Consumer<K, V> createRawConsumer(Map<String, Object> configProps) {
          // KafkaConsumer 是 kafka-clients.jar 中的类
-		return new KafkaConsumer<>(configProps, this.keyDeserializerSupplier.get(),
-				this.valueDeserializerSupplier.get());
-	}
+        return new KafkaConsumer<>(configProps, this.keyDeserializerSupplier.get(),
+            this.valueDeserializerSupplier.get());
+    }
 }
 ```
 
