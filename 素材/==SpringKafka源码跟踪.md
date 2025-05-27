@@ -31,7 +31,7 @@ KafkaMessageListenerContainer#doStart()
 AbstractMessageListenerContainer#getGroupId()
 ```
 
-
+## 启动流程
 
 ```
 Q: org.apache.kafka.clients.consumer.KafkaConsumer 在哪里实例化的？
@@ -39,6 +39,52 @@ A: DefaultKafkaConsumerFactory#createRawConsumer()
 ```
 
 
+
+```java
+A: 启动流程？
+Q: 
+切入点: @EnableKafka
+-> KafkaListenerConfigurationSelector
+-> KafkaBootstrapConfiguration
+    [注册Bean:KafkaListenerAnnotationBeanPostProcessor]
+    [注册Bean:KafkaListenerEndpointRegistry]
+-> KafkaListenerAnnotationBeanPostProcessor #postProcessAfterInitialization()
+-> processKafkaListener()
+-> processListener()
+-> KafkaListenerEndpointRegistrar #registerEndpoint()
+-> endpointDescriptors [注册到容器里List]
+(===== 此时，程序里已经有endpointDescriptor了 =====)
+
+(===== 开始遍历endpointDescriptors =====)
+KafkaListenerAnnotationBeanPostProcessor #afterSingletonsInstantiated()
+-> KafkaListenerEndpointRegistrar #afterPropertiesSet()
+-> registerAllEndpoints()
+-> KafkaListenerEndpointRegistry #registerListenerContainer()
+    [注册监听方法]
+    -> createListenerContainer
+    -> AbstractKafkaListenerContainerFactory #createListenerContainer
+    
+    -> AbstractKafkaListenerEndpoint #setupListenerContainer()
+    -> AbstractKafkaListenerEndpoint #setupMessageListener()
+    -> MethodKafkaListenerEndpoint #createMessageListener()
+    -> MethodKafkaListenerEndpoint #createMessageListenerInstance()
+    -> new RecordMessagingMessageListenerAdapter() #setHandlerMethod() [HandlerAdapter对象]
+    -> MethodKafkaListenerEndpoint #configureListenerAdapter()
+    思路: 通过KafkaListenerConfigurer，给KafkaListenerEndpointRegistrar设置DefaultMessageHandlerMethodFactory
+        注意DefaultMessageHandlerMethodFactory是初始化代码
+-> [listenerContainers] [注册到容器里Map]
+
+(===== 开始启动监听 =====)
+KafkaListenerEndpointRegistry#start()
+-> AbstractMessageListenerContainer#start()
+-> ConcurrentMessageListenerContainer#doStart() (concurrency不能大于partitions)
+-> KafkaMessageListenerContainer#start() -> doStart()
+-> DefaultKafkaConsumerFactory#createRawConsumer()
+```
+
+
+
+## 消费流程
 
 ```
 Q: KafkaConsumer 监听到 kafka 消息，消费流程是怎么样的？
@@ -63,6 +109,37 @@ A: KafkaMessageListenerContainer.ListenerConsumer#pollAndInvoke()
 -> MessagingMessageListenerAdapter#handleResult              [处理方法返回结果]
 -> KafkaMessageListenerContainer.ListenerConsumer#ackCurrent [ACK]
 ```
+
+
+
+```java
+A: Consumer监听的线程名是怎么设置的？
+Q: org.springframework.kafka.listener.KafkaMessageListenerContainer#doStart
+
+public class KafkaMessageListenerContainer<K, V> // NOSONAR line count
+        extends AbstractMessageListenerContainer<K, V> {
+    protected void doStart() {
+        ContainerProperties containerProperties = getContainerProperties();
+        Object messageListener = containerProperties.getMessageListener();
+        if (containerProperties.getConsumerTaskExecutor() == null) {
+            SimpleAsyncTaskExecutor consumerExecutor = new SimpleAsyncTaskExecutor(
+                (getBeanName() == null ? "" : getBeanName()) + "-C-");
+            containerProperties.setConsumerTaskExecutor(consumerExecutor);
+        }
+    }
+}
+```
+
+## EL 表达式
+
+```java
+// 调用静态方法
+#{T(com.fcbox.send.easykafka.client.support.SpringContext).getListenerContext().get('com.fcbox.send.example.consumer.handler.MultiMethodEventHandler')}
+
+
+```
+
+
 
 ## ErrorHandler
 
@@ -168,5 +245,22 @@ public class MultiTypeKafkaListener {
 
 
 
+现有下面两个类：
 
+```java
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface EventHandler {
+    String topics() default "";
+    String groupId() default "";
+}
+
+@Component
+@EventHandler(topics = "easykafka")
+public class MultiMethodEventHandler {
+
+}
+```
+
+MultiMethodEventHandler 是 Spring 的一个 Bean, 如何在运行时将实例化对象 MultiMethodEventHandler 上的 EventHandler 的 groupId() 值设置为 "Biz-" + eventHandler.topics()
 
