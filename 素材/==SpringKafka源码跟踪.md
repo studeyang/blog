@@ -105,6 +105,9 @@ A: KafkaMessageListenerContainer.ListenerConsumer#pollAndInvoke()
 -> JsonMessageConverter#extractAndConvertValue()             [反序列化]
 -> MessagingMessageListenerAdapter#invokeHandler()           [反射调用]
 -> HandlerAdapter#invoke()                                   [反射调用]
+-> DelegatingInvocableHandler#invoke()                       [反射调用]
+    -> getHandlerForPayload()                                [查找调用方法]
+    -> findHandlerForPayload()                               [查找调用方法]
 -> InvocableHandlerMethod#doInvoke [spring-message.jar]      [反射调用]
 -> MessagingMessageListenerAdapter#handleResult              [处理方法返回结果]
 -> KafkaMessageListenerContainer.ListenerConsumer#ackCurrent [ACK]
@@ -135,8 +138,6 @@ public class KafkaMessageListenerContainer<K, V> // NOSONAR line count
 ```java
 // 调用静态方法
 #{T(com.fcbox.send.easykafka.client.support.SpringContext).getListenerContext().get('com.fcbox.send.example.consumer.handler.MultiMethodEventHandler')}
-
-
 ```
 
 
@@ -220,7 +221,7 @@ A： Done
 
 ## 思路
 
-```
+```java
 另一种写法
 @Component
 @KafkaListener(id = "multiGroup", topics = "multitype")
