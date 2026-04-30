@@ -7,7 +7,7 @@ cover: https://technotes.oss-cn-shenzhen.aliyuncs.com/2026/202604301905526.jpeg
 thumbnail: https://technotes.oss-cn-shenzhen.aliyuncs.com/2026/202604301905526.jpeg
 categories: technotes
 toc: true
-description: Claude Code 从入门到进阶
+description: 本文介绍了 Claude Code 的使用方法，涵盖环境配置、快速入门技巧，以及记忆系统、Skills 技能系统、子代理编排等进阶特性。
 ---
 
 ## 一、入门篇
