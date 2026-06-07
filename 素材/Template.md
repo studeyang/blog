@@ -1,7 +1,7 @@
 ---
-permalink: 2024/0705.html
+permalink: 2026/0705.html
 title: 
-date: 2024-07-05 09:00:00
+date: 2026-07-05 09:00:00
 tags: 
 cover: 
 thumbnail: 
